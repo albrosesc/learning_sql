@@ -121,3 +121,14 @@ select * from Authors;
 select * from booksauthors where idAuthor=5
 
 select * from books
+ 
+ /* Consulta para crear una tabla temporal que pueda referenciarse varias veces */
+
+WITH cte_Authors_And_Books As
+(select idAuthor Id,  count(idauthor) NoBooks
+from booksauthors 
+group by idAuthor
+having  count(idauthor))
+select *  
+from cte_Authors_And_Books AS A1 
+where  NoBooks= (select max(NoBooks) from cte_Authors_And_Books AS A2);
